@@ -15,6 +15,6 @@ class PlantDataset(Dataset):
         image=cv2.resize(image,(224,224))
         y_label=torch.tensor(int(self.annotations[index][1]))
         if self.transform:
-            image=transform(image)
+            image=self.transform(image)
         
         return (image,y_label)
