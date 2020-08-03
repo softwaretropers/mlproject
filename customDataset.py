@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 class PlantDataset(Dataset):
     def __init__(self,anno,root_dir=None,transform=None):
         self.annotations=anno
-
+        self.transform=transform
     def __len__(self):
         return len(self.annotations)
 
@@ -14,9 +14,7 @@ class PlantDataset(Dataset):
         image=cv2.imread(img_path,cv2.IMREAD_COLOR)
         image=cv2.resize(image,(224,224))
         y_label=torch.tensor(int(self.annotations[index][1]))
-        tr2=transforms.ToTensor()
-        tr3=transforms.Normalize(mean=[0.485,0.456,0.406],std=[0.229,0.224,0.225])
-        image=tr2(image)
-        image=tr3(image)
+        if self.transform:
+            image=transform(image)
         
         return (image,y_label)
